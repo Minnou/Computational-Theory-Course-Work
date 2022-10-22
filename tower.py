@@ -42,5 +42,6 @@ class Tower():
             tower = tower + (" " * (self.__rings_amount // 2)) + self.__rings[i].to_string() +"\n"
             i = i - 1
         return tower
-    def print(self):
-        print(self.__rings)
+    @property
+    def rings(self):
+        return self.__rings

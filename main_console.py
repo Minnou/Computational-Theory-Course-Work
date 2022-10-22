@@ -1,5 +1,4 @@
 from time import sleep
-from traceback import print_tb
 from tower import Tower
 from ring import Ring
 import keyboard
