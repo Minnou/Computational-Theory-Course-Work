@@ -38,7 +38,7 @@ def blit_text(screen, text, midtop, aa=True, font_name = None, size = None, colo
 def AI_or_not_menu_screen():
     global screen, game_done
     menu_done = False
-    options = ["Рекурсивный", "Решать самостоятельно"]
+    options = ["Рекурсивный","Итеративный","Решать самостоятельно"]
     algorithm = 0
     while not menu_done: 
         screen.fill(white)
@@ -173,7 +173,41 @@ def TowerOfHanoi_recursive(n , source, destination, auxiliary):
     if (n == disk_amount):
         sleep(1)
         game_over()
-         
+
+def TowerOfHanoi_iterative(n, source, auxiliary, destination):
+    draw_screen()
+    sleep(0.5)
+    total_num_of_moves =int(pow(2, n) - 1)
+    for i in range(1, total_num_of_moves + 1):
+        if (i % 3 == 1):
+            moveDisksBetweenTwoPoles(source, destination)
+        elif (i % 3 == 2):
+            moveDisksBetweenTwoPoles(source, auxiliary)
+        elif (i % 3 == 0):
+            moveDisksBetweenTwoPoles(auxiliary, destination)
+    sleep(1)
+    game_over()
+
+def moveDisksBetweenTwoPoles(src, dest):
+    global steps
+    
+    pole1TopDisk = src.remove_disk()
+    pole2TopDisk = dest.remove_disk()
+ 
+    if (pole1TopDisk is None):
+        src.add_disk(pole2TopDisk)
+    elif (pole2TopDisk is None):
+        dest.add_disk(pole1TopDisk)  
+    elif (pole1TopDisk > pole2TopDisk):
+        src.add_disk(pole1TopDisk)
+        src.add_disk(pole2TopDisk)
+    else:
+        dest.add_disk(pole2TopDisk)
+        dest.add_disk(pole1TopDisk)
+    steps+=1
+    draw_screen()
+    sleep(0.5)
+
 def draw_screen():
     screen.fill(white)
     draw_towers()
@@ -193,7 +227,9 @@ current_disk_rect = None
 n =disk_amount
 algorithm = AI_or_not_menu_screen()
 if (algorithm == "Рекурсивный"):
-    TowerOfHanoi_recursive(n, a_tower,b_tower, c_tower)
+    TowerOfHanoi_recursive(n, a_tower, b_tower, c_tower)
+elif(algorithm == "Итеративный"):
+    TowerOfHanoi_iterative(n, a_tower, b_tower, c_tower)
 else:
 #Основной игровой цикл
     while not game_done:
